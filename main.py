@@ -8,7 +8,7 @@ import random
 
 class MyWidget(QMainWindow):
     def __init__(self):
-        self.all_circle = []
+        self.all_circles = []
         self.draw = False
         super().__init__()
         uic.loadUi('form_for_window.ui', self)
@@ -24,14 +24,18 @@ class MyWidget(QMainWindow):
             qp.begin(self)
             self.drawfigure(qp)
             qp.end()
+            self.draw = False
 
     def drawfigure(self, qp):
-        pen = QtGui.QPen(QtGui.QColor('yellow'), 3)
-        qp.setPen(pen)
         x = random.choice(range(50, 650))
         y = random.choice(range(50, 550))
         r = random.choice(range(20, 250))
-        qp.drawEllipse(x, y, r, r)
+        self.all_circles.append((x, y, r, r))
+
+        for circle in self.all_circles:
+            pen = QtGui.QPen(QtGui.QColor('yellow'), 3)
+            qp.setPen(pen)
+            qp.drawEllipse(*circle)
 
 
 app = QApplication(sys.argv)
